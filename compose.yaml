@@ -1,0 +1,10 @@
+services:
+  camino-fe:
+    build: camino-fe/.
+    ports:
+      - 3000
+  nginx:
+    build: nginx/.
+    ports:
+      - 80:80
+      - 443:443

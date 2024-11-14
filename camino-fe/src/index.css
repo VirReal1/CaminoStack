@@ -1,0 +1,38 @@
+@import 'primereact/resources/themes/lara-dark-indigo/theme.css';
+@import 'primereact/resources/primereact.min.css';
+@import 'primeicons/primeicons.css';
+@import 'primeflex/primeflex.css';
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Prime React overrides */
+.p-component {
+  font-family: inherit;
+}
+
+.p-card {
+  margin-bottom: 1rem;
+}
+
+.p-datatable .p-datatable-header {
+  background: transparent;
+}
+
+.p-menubar {
+  border-radius: 0;
+}

@@ -1,76 +1,98 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchForm } from '../components/SearchForm';
-import { PackageCard } from '../components/PackageCard';
 import { useWallet } from '../contexts/WalletContext';
 import { IPackage, ISearchCriteria } from '../types/general-types';
+import { useContract } from '../hooks/useContract';
+import OfferCard from '../components/OffersCard';
 
-export const Home: React.FC = () => {
-  const [packages, setPackages] = useState<IPackage[]>([]);
+const Home: React.FC = () => {
+  const [offerPackages, setOfferPackages] = useState<IPackage[]>([]);
   const { walletState } = useWallet();
+  const contract = useContract();
 
-  const handleSearch = async (criteria: ISearchCriteria) => {
-    // Here you would typically fetch packages from your smart contract
-    // For now, we'll use mock data
-    const mockPackages: IPackage[] = [
+  useEffect(() => {
+    const dummyData: IPackage[] = [
       {
-        id: '1',
-        totalPrice: 1500,
-        products: [
+        id: 1,
+        offers: [
           {
-            id: '1',
-            type: 'flight',
-            name: 'Direct Flight',
-            description: 'Round-trip flight',
-            price: 800,
-            supplier: '0x123...',
-            location: {
-              departure: criteria.departureLocation,
-              arrival: criteria.arrivalLocation,
-            },
+            id: 1,
+            description: 'Flight Test',
+            name: 'THY',
+            price: 100,
+            productType: 1,
+            supplier: 'THY',
             dateRange: {
-              start: criteria.departureDate,
-              end: criteria.arrivalDate,
+              start: new Date(),
+              end: new Date(),
             },
           },
           {
-            id: '2',
-            type: 'hotel',
-            name: 'Luxury Hotel',
-            description: '4-star hotel stay',
-            price: 700,
-            supplier: '0x456...',
-            location: {
-              arrival: criteria.arrivalLocation,
-            },
+            id: 2,
+            description: 'Anelli Test',
+            name: 'anelli',
+            price: 50,
+            productType: 2,
+            supplier: 'Anelli',
             dateRange: {
-              start: criteria.departureDate,
-              end: criteria.arrivalDate,
+              start: new Date(),
+              end: new Date(),
+            },
+          },
+          {
+            id: 3,
+            description: 'Safari Test',
+            name: 'safari',
+            price: 20,
+            productType: 3,
+            supplier: 'Safari',
+            dateRange: {
+              start: new Date(),
+              end: new Date(),
+            },
+          },
+          {
+            id: 4,
+            description: 'Boat Test',
+            name: 'boat',
+            price: 10,
+            productType: 4,
+            supplier: 'Boat',
+            dateRange: {
+              start: new Date(),
+              end: new Date(),
             },
           },
         ],
+        totalPrice: 180,
       },
     ];
+    setOfferPackages(dummyData);
+  }, []);
 
-    setPackages(mockPackages);
+  const handleSearch = async (criteria: ISearchCriteria) => {
+    // await contract.getOffers();
   };
 
-  const handlePurchase = async (packageId: string) => {
+  const handlePurchase = async (packageId: number) => {
     if (!walletState.isConnected) {
       alert('Please connect your wallet first!');
       return;
     }
 
-    // Here you would interact with your smart contract
     console.log('Purchasing package:', packageId);
   };
 
   return (
     <div className="container">
       <SearchForm onSearch={handleSearch} />
-
-      {packages.map((pkg) => (
-        <PackageCard key={pkg.id} package={pkg} onPurchase={handlePurchase} />
-      ))}
+      <div className="p-4">
+        {offerPackages.map((offerPackage, index) => (
+          <OfferCard key={index} offerPackage={offerPackage} index={index} onPurchase={handlePurchase} />
+        ))}
+      </div>{' '}
     </div>
   );
 };
+
+export default Home;

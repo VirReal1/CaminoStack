@@ -10,7 +10,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { IProduct } from '../types/general-types';
 import { useWallet } from '../contexts/WalletContext';
 
-export const Management: React.FC = () => {
+const Management: React.FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [newProduct, setNewProduct] = useState<Partial<IProduct>>({});
@@ -106,3 +106,5 @@ export const Management: React.FC = () => {
     </div>
   );
 };
+
+export default Management;

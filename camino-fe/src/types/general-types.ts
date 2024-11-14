@@ -1,23 +1,19 @@
-export interface IProduct {
-  id: string;
-  type: string;
+export interface IOffer {
+  id: number;
+  productType: number;
   name: string;
   description: string;
   price: number;
-  supplier: string;
-  location?: {
-    departure?: string;
-    arrival?: string;
-  };
-  dateRange?: {
+  supplier: string; // TODO Can
+  dateRange: {
     start: Date;
     end: Date;
   };
 }
 
 export interface IPackage {
-  id: string;
-  products: IProduct[];
+  id: number;
+  offers: IOffer[];
   totalPrice: number;
 }
 

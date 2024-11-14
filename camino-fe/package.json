@@ -13,7 +13,7 @@
     "@metamask/detect-provider": "^2.0.0",
     "@types/react-router-dom": "^5.3.3",
     "camino-fe": "file:",
-    "ethers": "^6.13.4",
+    "ethers": "^5.7.2",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
     "primereact": "^10.8.4",

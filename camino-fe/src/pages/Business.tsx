@@ -1,114 +1,159 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card } from 'primereact/card';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { useWallet } from '../contexts/WalletContext';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { Button } from 'primereact/button';
+import { LOCATION_OPTIONS, PRODUCT_TYPE_OPTIONS } from '../utils/constants';
+import { useContract } from '../hooks/useContract';
 
-interface Transaction {
-  id: string;
-  date: Date;
-  amount: number;
-  type: string;
-  status: string;
-}
+const Business = () => {
+  const contract = useContract();
 
-export const Business: React.FC = () => {
-  const { walletState } = useWallet();
-  const [transactions] = useState<Transaction[]>([
-    {
-      id: '1',
-      date: new Date(),
-      amount: 1500,
-      type: 'Payment Received',
-      status: 'Completed',
-    },
-  ]);
+  const [formData, setFormData] = useState({
+    productType: null,
+    origin: '',
+    destination: '',
+    departureDate: null,
+    arrivalDate: null,
+    numberOfGuests: null,
+    salesPrice: null,
+  });
 
-  const salesData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'Sales',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        borderColor: '#4caf50',
-        tension: 0.4,
-      },
-    ],
-  };
-
-  const options = {
-    maintainAspectRatio: false,
-    aspectRatio: 0.6,
-    plugins: {
-      legend: {
-        labels: {
-          color: '#495057',
-        },
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: '#495057',
-        },
-        grid: {
-          color: '#ebedef',
-        },
-      },
-      y: {
-        ticks: {
-          color: '#495057',
-        },
-        grid: {
-          color: '#ebedef',
-        },
-      },
-    },
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formData && formData.productType && formData.departureDate && formData.arrivalDate && formData.origin && formData.numberOfGuests && formData.salesPrice)
+      await contract.addProductTemplate(
+        formData.productType,
+        formData.departureDate,
+        formData.arrivalDate,
+        formData.origin,
+        formData.destination,
+        formData.numberOfGuests,
+        formData.salesPrice,
+        ''
+      );
   };
 
   return (
-    <div className="container">
-      <div className="grid">
-        {/* <div className="col-12 lg:col-6">
-          <Card title="Revenue Overview">
-            <div style={{ height: '350px' }}>
-              <Chart type="line" data={salesData} options={options} />
-            </div>
-          </Card>
-        </div> */}
-
-        <div className="col-12 lg:col-6">
-          <Card title="Quick Stats">
+    <div className="flex align-items-center justify-content-center">
+      <div className="surface-card p-4 shadow-2 border-round w-full max-w-5xl">
+        <Card title="Create an Offer" className="mb-0">
+          <form onSubmit={handleSubmit} className="p-fluid">
             <div className="grid">
-              <div className="col-6">
-                <div className="text-center p-3 border-round bg-primary">
-                  <div className="text-xl font-bold mb-2">Total Revenue</div>
-                  <div className="text-2xl">$15,000</div>
-                </div>
+              {/* Product Type */}
+              <div className="col-12 mb-4">
+                <label htmlFor="productType" className="block text-900 font-medium mb-2">
+                  Product Type
+                </label>
+                <Dropdown
+                  id="productType"
+                  value={formData.productType}
+                  options={PRODUCT_TYPE_OPTIONS}
+                  onChange={(e) => setFormData({ ...formData, productType: e.value })}
+                  placeholder="Select a product type"
+                  className="w-full"
+                />
               </div>
-              <div className="col-6">
-                <div className="text-center p-3 border-round bg-secondary">
-                  <div className="text-xl font-bold mb-2">Active Products</div>
-                  <div className="text-2xl">25</div>
-                </div>
+
+              {/* Locations */}
+              <div className="col-12 md:col-6 mb-4">
+                <label htmlFor="origin" className="block text-900 font-medium mb-2">
+                  Origin
+                </label>
+                <Dropdown
+                  id="origin"
+                  value={formData.origin}
+                  options={LOCATION_OPTIONS}
+                  onChange={(e) => setFormData({ ...formData, origin: e.value })}
+                  placeholder="Select Origin"
+                  className="w-full"
+                />
+              </div>
+
+              <div className="col-12 md:col-6 mb-4">
+                <label htmlFor="destination" className="block text-900 font-medium mb-2">
+                  Destination
+                </label>
+                <Dropdown
+                  id="destination"
+                  value={formData.destination}
+                  options={LOCATION_OPTIONS}
+                  onChange={(e) => setFormData({ ...formData, destination: e.value })}
+                  placeholder="Select Destination"
+                  className="w-full"
+                />
+              </div>
+
+              {/* Dates */}
+              <div className="col-12 md:col-6 mb-4">
+                <label htmlFor="departureDate" className="block text-900 font-medium mb-2">
+                  Departure Date
+                </label>
+                <Calendar
+                  id="departureDate"
+                  value={formData.departureDate}
+                  onChange={(e) => setFormData({ ...formData, departureDate: e.value })}
+                  showIcon
+                  className="w-full"
+                />
+              </div>
+
+              <div className="col-12 md:col-6 mb-4">
+                <label htmlFor="arrivalDate" className="block text-900 font-medium mb-2">
+                  Arrival Date
+                </label>
+                <Calendar
+                  id="arrivalDate"
+                  value={formData.arrivalDate}
+                  onChange={(e) => setFormData({ ...formData, arrivalDate: e.value })}
+                  showIcon
+                  className="w-full"
+                />
+              </div>
+
+              {/* Number of Guests */}
+              <div className="col-6 mb-4">
+                <label htmlFor="numberOfGuests" className="block text-900 font-medium mb-2">
+                  Number of Guests
+                </label>
+                <InputNumber
+                  id="numberOfGuests"
+                  value={formData.numberOfGuests}
+                  onValueChange={(e) => setFormData({ ...formData, numberOfGuests: e.value })}
+                  placeholder="Enter number of guests"
+                  min={1}
+                  showButtons
+                  className="w-full"
+                />
+              </div>
+
+              {/* Number of Guests */}
+              <div className="col-6 mb-4">
+                <label htmlFor="salesPrice" className="block text-900 font-medium mb-2">
+                  Sales Price
+                </label>
+                <InputNumber
+                  id="salesPrice (CAM)"
+                  value={formData.salesPrice}
+                  onValueChange={(e) => setFormData({ ...formData, salesPrice: e.value })}
+                  placeholder="Enter the sales price (CAM)"
+                  min={1}
+                  showButtons
+                  className="w-full"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="col-12">
+                <Button type="submit" label="Create Offer" icon="pi pi-plus" className="w-full" />
               </div>
             </div>
-          </Card>
-        </div>
-
-        <div className="col-12">
-          <Card title="Transaction History">
-            <DataTable value={transactions} responsiveLayout="scroll">
-              <Column field="id" header="ID" />
-              <Column field="date" header="Date" body={(rowData) => new Date(rowData.date).toLocaleDateString()} />
-              <Column field="amount" header="Amount" body={(rowData) => `$${rowData.amount}`} />
-              <Column field="type" header="Type" />
-              <Column field="status" header="Status" />
-            </DataTable>
-          </Card>
-        </div>
+          </form>
+        </Card>
       </div>
     </div>
   );
 };
+
+export default Business;

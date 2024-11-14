@@ -6,12 +6,16 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { ISearchCriteria } from '../types/general-types';
+import { useToast } from '../contexts/ToastContext';
+import { LOCATION_OPTIONS, PRODUCT_TYPE_OPTIONS } from '../utils/constants';
 
 interface SearchFormProps {
   onSearch: (criteria: ISearchCriteria) => void;
 }
 
 export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+  const toast = useToast();
+
   const [criteria, setCriteria] = useState<ISearchCriteria>({
     productTypes: [],
     departureLocation: '',
@@ -21,22 +25,32 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
     guests: 1,
   });
 
-  const productTypeOptions = [
-    { label: 'Flight', value: 'flight' },
-    { label: 'Hotel', value: 'hotel' },
-    { label: 'Car Rental', value: 'car' },
-    { label: 'Activities', value: 'activities' },
-  ];
-
-  const locationOptions = [
-    { label: 'New York', value: 'NYC' },
-    { label: 'London', value: 'LON' },
-    { label: 'Paris', value: 'PAR' },
-    { label: 'Tokyo', value: 'TYO' },
-  ];
-
-  const handleSearch = () => {
+  const handleSearch = async () => {
+    if (!validateForm()) {
+      toast?.showToast({ detail: 'Please check you inputs!', severity: 'warn' });
+      return;
+    }
     onSearch(criteria);
+  };
+
+  const validateForm = (): boolean => {
+    // Check product types
+    if (criteria.productTypes.length === 0) return false;
+
+    // Check locations
+    if (!criteria.departureLocation || !criteria.arrivalLocation) return false;
+    if (criteria.departureLocation === criteria.arrivalLocation) return false;
+
+    // Check departure date
+    if (criteria.departureDate <= new Date()) return false;
+
+    // Check return date
+    if (criteria.arrivalDate <= criteria.departureDate) return false;
+
+    // Check guests
+    if (criteria.guests < 1 || criteria.guests > 10) return false;
+
+    return true;
   };
 
   return (
@@ -46,7 +60,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           <label className="block mb-2">Product Types</label>
           <MultiSelect
             value={criteria.productTypes}
-            options={productTypeOptions}
+            options={PRODUCT_TYPE_OPTIONS}
             onChange={(e) => setCriteria({ ...criteria, productTypes: e.value })}
             placeholder="Select Products"
             className="w-full"
@@ -57,7 +71,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           <label className="block mb-2">Departure Location</label>
           <Dropdown
             value={criteria.departureLocation}
-            options={locationOptions}
+            options={LOCATION_OPTIONS}
             onChange={(e) => setCriteria({ ...criteria, departureLocation: e.value })}
             placeholder="Select Departure"
             className="w-full"
@@ -68,7 +82,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           <label className="block mb-2">Arrival Location</label>
           <Dropdown
             value={criteria.arrivalLocation}
-            options={locationOptions}
+            options={LOCATION_OPTIONS}
             onChange={(e) => setCriteria({ ...criteria, arrivalLocation: e.value })}
             placeholder="Select Arrival"
             className="w-full"
@@ -82,12 +96,12 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 
         <div className="col-12 md:col-6 lg:col-3">
           <label className="block mb-2">Departure Date</label>
-          <Calendar value={criteria.departureDate} onChange={(e) => setCriteria({ ...criteria, departureDate: e.value as Date })} showTime className="w-full" />
+          <Calendar value={criteria.departureDate} onChange={(e) => setCriteria({ ...criteria, departureDate: e.value as Date })} className="w-full" />
         </div>
 
         <div className="col-12 md:col-6 lg:col-3">
           <label className="block mb-2">Return Date</label>
-          <Calendar value={criteria.arrivalDate} onChange={(e) => setCriteria({ ...criteria, arrivalDate: e.value as Date })} showTime className="w-full" />
+          <Calendar value={criteria.arrivalDate} onChange={(e) => setCriteria({ ...criteria, arrivalDate: e.value as Date })} className="w-full" />
         </div>
 
         <div className="col-12 flex justify-content-end">

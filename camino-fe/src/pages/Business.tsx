@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
@@ -6,11 +6,12 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { LOCATION_OPTIONS, PRODUCT_TYPE_OPTIONS } from '../utils/constants';
 import { useContract } from '../hooks/useContract';
+import { BusinessForm } from '../types/general-types';
 
 const Business = () => {
   const contract = useContract();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<BusinessForm>({
     productType: null,
     origin: '',
     destination: '',
@@ -20,7 +21,7 @@ const Business = () => {
     salesPrice: null,
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData && formData.productType && formData.departureDate && formData.arrivalDate && formData.origin && formData.numberOfGuests && formData.salesPrice)
       await contract.addProductTemplate(
@@ -28,7 +29,7 @@ const Business = () => {
         formData.departureDate,
         formData.arrivalDate,
         formData.origin,
-        formData.destination,
+        formData.destination as string,
         formData.numberOfGuests,
         formData.salesPrice,
         ''
@@ -93,7 +94,7 @@ const Business = () => {
                 <Calendar
                   id="departureDate"
                   value={formData.departureDate}
-                  onChange={(e) => setFormData({ ...formData, departureDate: e.value })}
+                  onChange={(e) => setFormData({ ...formData, departureDate: e.value! })}
                   showIcon
                   className="w-full"
                 />
@@ -106,7 +107,7 @@ const Business = () => {
                 <Calendar
                   id="arrivalDate"
                   value={formData.arrivalDate}
-                  onChange={(e) => setFormData({ ...formData, arrivalDate: e.value })}
+                  onChange={(e) => setFormData({ ...formData, arrivalDate: e.value! })}
                   showIcon
                   className="w-full"
                 />
@@ -120,7 +121,7 @@ const Business = () => {
                 <InputNumber
                   id="numberOfGuests"
                   value={formData.numberOfGuests}
-                  onValueChange={(e) => setFormData({ ...formData, numberOfGuests: e.value })}
+                  onValueChange={(e) => setFormData({ ...formData, numberOfGuests: e.value! })}
                   placeholder="Enter number of guests"
                   min={1}
                   showButtons
@@ -136,7 +137,7 @@ const Business = () => {
                 <InputNumber
                   id="salesPrice (CAM)"
                   value={formData.salesPrice}
-                  onValueChange={(e) => setFormData({ ...formData, salesPrice: e.value })}
+                  onValueChange={(e) => setFormData({ ...formData, salesPrice: e.value! })}
                   placeholder="Enter the sales price (CAM)"
                   min={1}
                   showButtons

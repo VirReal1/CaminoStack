@@ -28,12 +28,6 @@ export const Navbar: React.FC = () => {
         className: location.pathname === '/' ? 'active' : '',
       },
       {
-        label: 'Management',
-        icon: 'pi pi-cog',
-        command: () => navigate('/management'),
-        className: location.pathname === '/management' ? 'active' : '',
-      },
-      {
         label: 'Business',
         icon: 'pi pi-briefcase',
         command: () => navigate('/business'),

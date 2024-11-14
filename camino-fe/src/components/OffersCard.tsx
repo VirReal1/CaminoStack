@@ -1,7 +1,7 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { IPackage } from '../types/general-types';
-import { PRODUCT_TYPE_OPTIONS, PRODUCT_TYPE_ICONS } from '../utils/constants';
+import { PRODUCT_TYPE_OPTIONS, PRODUCT_TYPE_ICONS, SUPPLIERS } from '../utils/constants';
 
 type OfferCardProps = {
   offerPackage: IPackage;
@@ -43,7 +43,8 @@ const OfferCard = ({ offerPackage, index, onPurchase }: OfferCardProps) => {
                     <i className={`${PRODUCT_TYPE_ICONS.find((l) => l.key === offer.productType)!.value} text-xl`}></i>
                     <div className="flex flex-column">
                       <span className="font-semibold">{PRODUCT_TYPE_OPTIONS.find((l) => l.value === offer.productType)?.label}</span>
-                      <span className="text-sm text-600">{formatDateRange(offer.dateRange.start, offer.dateRange.start)}</span>
+                      <span className="text text-600">{SUPPLIERS.find((l) => l.address === offer.supplierAddress)?.name}</span>
+                      <span className="text-sm text-600">{formatDateRange(offer.startDate, offer.endDate)}</span>
                     </div>
                   </div>
                 ))}

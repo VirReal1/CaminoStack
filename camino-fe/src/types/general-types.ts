@@ -1,14 +1,11 @@
 export interface IOffer {
   id: number;
   productType: number;
-  name: string;
+  supplierAddress: string;
   description: string;
-  price: number;
-  supplier: string; // TODO Can
-  dateRange: {
-    start: Date;
-    end: Date;
-  };
+  ipfsHash: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface IPackage {
@@ -18,7 +15,7 @@ export interface IPackage {
 }
 
 export interface ISearchCriteria {
-  productTypes: string[];
+  productTypes: number[];
   departureLocation: string;
   arrivalLocation: string;
   departureDate: Date;
@@ -29,4 +26,14 @@ export interface ISearchCriteria {
 export interface IWalletState {
   accounts: string[];
   isConnected: boolean;
+}
+
+export interface BusinessForm {
+  productType: number | null;
+  origin: string | null;
+  destination: string | null;
+  departureDate: Date | null;
+  arrivalDate: Date | null;
+  numberOfGuests: number | null;
+  salesPrice: number | null;
 }

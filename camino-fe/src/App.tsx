@@ -1,13 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { WalletProvider } from './contexts/WalletContext';
-
-// Prime React imports
-import './App.css';
 import { ToastProvider } from './contexts/ToastContext';
 import Business from './pages/Business';
 import Home from './pages/Home';
-import Management from './pages/Management';
+
+import './App.css';
+import Purchase from './pages/Purchase';
 
 function App() {
   return (
@@ -19,8 +18,8 @@ function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/management" element={<Management />} />
                 <Route path="/business" element={<Business />} />
+                <Route path="/purchase" element={<Purchase />} />
               </Routes>
             </main>
           </div>

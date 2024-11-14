@@ -1,7 +1,7 @@
 import abi from './Contract.json';
 
 export const CONTRACT_ABI = abi;
-export const CONTRACT_ADDRESS = '0x3041810475FE2961b7cf772c6fDaec4f18aEe72B';
+export const CONTRACT_ADDRESS = '0x14FbF4800eC30C8A5B0E5AF1b240f826186562Ed';
 
 export const PRODUCT_TYPE_OPTIONS = [
   { label: 'Flight', value: 1 },
@@ -11,10 +11,10 @@ export const PRODUCT_TYPE_OPTIONS = [
 ];
 
 export const LOCATION_OPTIONS = [
-  { label: 'Antalya', value: 'ayt' },
-  { label: 'Ankara', value: 'ank' },
-  { label: 'İzmir', value: 'izm' },
-  { label: 'İstanbul', value: 'ist' },
+  { label: 'Antalya', value: 'AYT' },
+  { label: 'Ankara', value: 'ANK' },
+  { label: 'İzmir', value: 'IZM' },
+  { label: 'İstanbul', value: 'IST' },
 ];
 
 export const PRODUCT_TYPE_ICONS = [
@@ -28,10 +28,29 @@ export const PRODUCT_TYPE_ICONS = [
   },
   {
     key: 3,
-    value: 'pi pi-compass',
+    value: 'pi pi-map',
   },
   {
     key: 4,
-    value: 'pi pi-map',
+    value: 'pi pi-compass',
+  },
+];
+
+export const SUPPLIERS = [
+  {
+    address: '1',
+    name: 'THY',
+  },
+  {
+    address: '2',
+    name: 'Anelli',
+  },
+  {
+    address: '3',
+    name: 'Antalya Safari Trip',
+  },
+  {
+    address: '4',
+    name: 'Antalya Boat Trip',
   },
 ];

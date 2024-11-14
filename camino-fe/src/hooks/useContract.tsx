@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { ethers } from 'ethers';
 import { useWallet } from '../contexts/WalletContext';
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../utils/constants';
+import { IPackage } from '../types/general-types';
 
 export interface IProduct {
   productId: number;
@@ -161,20 +162,6 @@ export const useContract = () => {
     }
   };
 
-  const getOffers = async (): Promise<any> => {
-    setLoading(true);
-    setError(null);
-    try {
-      const contract = getContract();
-      return await contract.getOffers();
-    } catch (err: any) {
-      setError(err.message);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const getOffer = async (offerId: number): Promise<IOffer> => {
     setLoading(true);
     setError(null);
@@ -232,6 +219,44 @@ export const useContract = () => {
     }
   };
 
+  const getPackages = async (
+    productTypes: number[],
+    departureLocation: string,
+    arrivalLocation: string,
+    departureDate: Date,
+    arrivalDate: Date,
+    guests: number
+  ): Promise<IPackage[]> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const departureDateTick = parseInt(departureDate.getFullYear() + '' + departureDate.getMonth() + '' + departureDate.getDay());
+      const arrivalDateTick = parseInt(arrivalDate.getFullYear() + '' + arrivalDate.getMonth() + '' + arrivalDate.getDay());
+      const contract = getContract();
+      return await contract.getPackages(productTypes, departureDateTick, arrivalDateTick, departureLocation, arrivalLocation, guests);
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const buyPackage = async (supplierId: number) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const contract = getContract();
+      const tx = await contract.buyPackage(supplierId);
+      await tx.wait();
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Contract Events
   // const listenToEvents = useCallback(
   //   (callback: (event: any) => void) => {
@@ -278,6 +303,9 @@ export const useContract = () => {
     deactivateOffer,
     getOffer,
     purchaseOffer,
+    // Packages functions
+    getPackages,
+    buyPackage,
     // Events
     // listenToEvents,
   };

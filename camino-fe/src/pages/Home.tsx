@@ -4,11 +4,14 @@ import { useWallet } from '../contexts/WalletContext';
 import { IPackage, ISearchCriteria } from '../types/general-types';
 import { useContract } from '../hooks/useContract';
 import OfferCard from '../components/OffersCard';
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [offerPackages, setOfferPackages] = useState<IPackage[]>([]);
+  const [showTable, setShowTable] = useState<boolean>(false);
   const { walletState } = useWallet();
   const contract = useContract();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const dummyData: IPackage[] = [
@@ -18,50 +21,38 @@ const Home: React.FC = () => {
           {
             id: 1,
             description: 'Flight Test',
-            name: 'THY',
-            price: 100,
             productType: 1,
-            supplier: 'THY',
-            dateRange: {
-              start: new Date(),
-              end: new Date(),
-            },
+            supplierAddress: '1',
+            startDate: new Date(),
+            endDate: new Date(),
+            ipfsHash: '',
           },
           {
             id: 2,
             description: 'Anelli Test',
-            name: 'anelli',
-            price: 50,
             productType: 2,
-            supplier: 'Anelli',
-            dateRange: {
-              start: new Date(),
-              end: new Date(),
-            },
+            supplierAddress: '2',
+            startDate: new Date(),
+            endDate: new Date(),
+            ipfsHash: '',
           },
           {
             id: 3,
             description: 'Safari Test',
-            name: 'safari',
-            price: 20,
             productType: 3,
-            supplier: 'Safari',
-            dateRange: {
-              start: new Date(),
-              end: new Date(),
-            },
+            supplierAddress: '3',
+            startDate: new Date(),
+            endDate: new Date(),
+            ipfsHash: '',
           },
           {
             id: 4,
             description: 'Boat Test',
-            name: 'boat',
-            price: 10,
             productType: 4,
-            supplier: 'Boat',
-            dateRange: {
-              start: new Date(),
-              end: new Date(),
-            },
+            supplierAddress: '4',
+            startDate: new Date(),
+            endDate: new Date(),
+            ipfsHash: '',
           },
         ],
         totalPrice: 180,
@@ -71,7 +62,21 @@ const Home: React.FC = () => {
   }, []);
 
   const handleSearch = async (criteria: ISearchCriteria) => {
-    // await contract.getOffers();
+    // TODO Can
+    // setOfferPackages(
+    //   await contract.getPackages(
+    //     criteria.productTypes,
+    //     criteria.departureLocation,
+    //     criteria.arrivalLocation,
+    //     criteria.departureDate,
+    //     criteria.arrivalDate,
+    //     criteria.guests
+    //   )
+    // );
+
+    if (offerPackages && offerPackages.length > 0) {
+      setShowTable(true);
+    }
   };
 
   const handlePurchase = async (packageId: number) => {
@@ -80,17 +85,23 @@ const Home: React.FC = () => {
       return;
     }
 
-    console.log('Purchasing package:', packageId);
+    // TODO Can
+    // await contract.buyPackage(packageId);
+    navigate('/purchase?status=success');
   };
 
   return (
     <div className="container">
       <SearchForm onSearch={handleSearch} />
-      <div className="p-4">
-        {offerPackages.map((offerPackage, index) => (
-          <OfferCard key={index} offerPackage={offerPackage} index={index} onPurchase={handlePurchase} />
-        ))}
-      </div>{' '}
+      {showTable ? (
+        <div className="p-4">
+          {offerPackages.map((offerPackage, index) => (
+            <OfferCard key={index} offerPackage={offerPackage} index={index} onPurchase={handlePurchase} />
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -1,0 +1,4 @@
+.p-menubar .active {
+  font-weight: bold;
+  color: #007ad9; /* Adjust to your theme's active color */
+}

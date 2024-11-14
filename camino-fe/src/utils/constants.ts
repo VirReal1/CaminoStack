@@ -1,7 +1,7 @@
 import abi from './Contract.json';
 
 export const CONTRACT_ABI = abi;
-export const CONTRACT_ADDRESS = '0x14FbF4800eC30C8A5B0E5AF1b240f826186562Ed';
+export const CONTRACT_ADDRESS = '0x0A380BB8293752500ad703736b6235A7f6f08FA8';
 
 export const PRODUCT_TYPE_OPTIONS = [
   { label: 'Flight', value: 1 },

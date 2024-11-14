@@ -5,7 +5,7 @@ export interface IOffer {
   description: string;
   ipfsHash: string;
   startDate: Date;
-  endDate: Date;
+  endDate?: Date;
 }
 
 export interface IPackage {

@@ -7,14 +7,14 @@
         "type": "uint8"
       },
       {
-        "internalType": "uint40",
+        "internalType": "uint256",
         "name": "_startDate",
-        "type": "uint40"
+        "type": "uint256"
       },
       {
-        "internalType": "uint40",
+        "internalType": "uint256",
         "name": "_endDate",
-        "type": "uint40"
+        "type": "uint256"
       },
       {
         "internalType": "string",
@@ -109,11 +109,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
-      },
-      {
         "internalType": "uint256[]",
         "name": "_productTemplateIds",
         "type": "uint256[]"
@@ -125,7 +120,13 @@
       }
     ],
     "name": "createPackage",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_packageId",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -133,6 +134,55 @@
     "inputs": [],
     "name": "emergencyWithdraw",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8[]",
+        "name": "_serviceTypeIds",
+        "type": "uint8[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_origin",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_destination",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_numGuests",
+        "type": "uint8"
+      }
+    ],
+    "name": "getPackages",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "packageId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -361,12 +411,6 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "supplierProductId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "productTemplateId",
         "type": "uint256"
       },
@@ -441,72 +485,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256[]",
-        "name": "_productTemplateIds",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "getOffers",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "productTemplateId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint8",
-            "name": "serviceTypeId",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint40",
-            "name": "startDate",
-            "type": "uint40"
-          },
-          {
-            "internalType": "uint40",
-            "name": "endDate",
-            "type": "uint40"
-          },
-          {
-            "internalType": "string",
-            "name": "origin",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "destination",
-            "type": "string"
-          },
-          {
-            "internalType": "uint8",
-            "name": "numGuests",
-            "type": "uint8"
-          },
-          {
-            "internalType": "address",
-            "name": "supplierAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct ServiceMarketplace.PackageTemplateOffer[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "_packageId",
         "type": "uint256"
@@ -514,11 +492,6 @@
     ],
     "name": "getPackageDetails",
     "outputs": [
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
       {
         "internalType": "uint256",
         "name": "suppliersAmount",
@@ -617,11 +590,6 @@
       },
       {
         "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
         "name": "ipfsHash",
         "type": "string"
       },
@@ -683,14 +651,14 @@
         "type": "uint8"
       },
       {
-        "internalType": "uint40",
+        "internalType": "uint256",
         "name": "startDate",
-        "type": "uint40"
+        "type": "uint256"
       },
       {
-        "internalType": "uint40",
+        "internalType": "uint256",
         "name": "endDate",
-        "type": "uint40"
+        "type": "uint256"
       },
       {
         "internalType": "string",

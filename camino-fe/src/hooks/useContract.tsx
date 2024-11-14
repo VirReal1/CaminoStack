@@ -233,7 +233,10 @@ export const useContract = () => {
       const departureDateTick = parseInt(departureDate.getFullYear() + '' + departureDate.getMonth() + '' + departureDate.getDay());
       const arrivalDateTick = parseInt(arrivalDate.getFullYear() + '' + arrivalDate.getMonth() + '' + arrivalDate.getDay());
       const contract = getContract();
-      return await contract.getPackages(productTypes, departureDateTick, arrivalDateTick, departureLocation, arrivalLocation, guests);
+      const a = await contract.getPackages(productTypes, departureDateTick, arrivalDateTick, departureLocation, arrivalLocation, guests);
+      console.log(a);
+      await a.wait();
+      return a;
     } catch (err: any) {
       setError(err.message);
       throw err;
